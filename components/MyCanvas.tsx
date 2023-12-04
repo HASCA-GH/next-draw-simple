@@ -1,24 +1,22 @@
 'use client'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, MouseEvent } from "react";
 
 const MyCanvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const contextRef = useRef<CanvasRenderingContext2D | null>(null);
     const [isDrawing, setIsDrawing] = useState(false)
+    const [points, setPoints] = useState<Array<[number, number]>>([])
 
     useEffect(() => {
         const canvas = canvasRef.current!;
         const context = canvas.getContext("2d");
 
         if (context) {
-            // canvas.style.width = "500";
-            // canvas.style.height = "400";
             context.scale(1, 1)
             context.lineCap = "round";
             context.lineJoin = "round";
             context.strokeStyle = 'green'
             context.lineWidth = 5
-            // Your initialization code here
             contextRef.current = context
         }
 
@@ -28,23 +26,27 @@ const MyCanvas = () => {
         };
     }, []);
 
-    const startDrawing = (e: any) => {
+    const startDrawing = (e: MouseEvent<HTMLCanvasElement>) => {
         const { offsetX, offsetY } = e.nativeEvent
-
         contextRef.current?.beginPath()
         contextRef.current?.moveTo(offsetX, offsetY)
+
+        setPoints((prev) => [...prev, [offsetX, offsetY]])
+        console.log(points);
         setIsDrawing(true)
     }
 
-    const draw = (e: any) => {
+    const draw = (e: MouseEvent<HTMLCanvasElement>) => {
         if (!isDrawing) {
             return
         }
         const { offsetX, offsetY } = e.nativeEvent
+        setPoints((prev) => [...prev, [offsetX, offsetY]])
+        console.log(points);
         contextRef.current?.lineTo(offsetX, offsetY)
         contextRef.current?.stroke()
     }
-    const finishDrawing = (e: any) => {
+    const finishDrawing = () => {
         contextRef.current?.closePath()
         setIsDrawing(false)
     }
@@ -58,16 +60,10 @@ const MyCanvas = () => {
                 ref={canvasRef}
                 onMouseDown={(e) => startDrawing(e)}
                 onMouseMove={(e) => draw(e)}
-                onMouseUp={(e) => finishDrawing(e)}
+                onMouseUp={finishDrawing}
             />
         </div>
     );
 };
 
 export default MyCanvas;
-// const c = document.getElementById("myCanvas") as HTMLCanvasElement | null
-// const ctx = c?.getContext("2d") as CanvasRenderingContext2D | null;
-
-
-// setC(document.getElementById("myCanvas") as HTMLCanvasElement | null)
-// setCtx(c?.getContext("2d") as CanvasRenderingContext2D | null)

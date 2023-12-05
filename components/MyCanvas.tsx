@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState, useContext, MouseEvent } from "react";
 import MyContext from '@/components/context/myContext'
-import { puntosContextType } from '@/components/context/types'
+import { Punto, puntosContextType } from '@/components/context/types'
 
 const MyCanvas = () => {
     const { puntosContext, setPuntosContext } = useContext(MyContext) as puntosContextType
@@ -29,6 +29,7 @@ const MyCanvas = () => {
         };
     }, []);
 
+
     const startDrawing = (e: MouseEvent<HTMLCanvasElement>) => {
         const { offsetX, offsetY } = e.nativeEvent
         contextRef.current?.beginPath()
@@ -36,11 +37,11 @@ const MyCanvas = () => {
 
         setPoints((prev) => [...prev, [offsetX, offsetY]])
 
-        const newPoint = {
-            id: 'Mi punto',
-            punto: [offsetX, offsetY]
-        }
-        setPuntosContext([...puntosContext, newPoint])
+        // const newPoint = {
+        //     id: 'Mi punto',
+        //     punto: [offsetX, offsetY]
+        // }
+        // setPuntosContext([...puntosContext, newPoint])
         // console.log(points);
         // console.log(puntosContext);
         setIsDrawing(true)
@@ -51,23 +52,29 @@ const MyCanvas = () => {
             return
         }
         const { offsetX, offsetY } = e.nativeEvent
-        setPoints((prev) => [...prev, [offsetX, offsetY]])
+        setPoints((prev: Array<[number, number]>) => [...prev, [offsetX, offsetY]])
 
-        const newPoint = {
-            id: 'Mi punto',
-            punto: [offsetX, offsetY]
-        }
-        setPuntosContext([...puntosContext, newPoint])
-        // console.log(puntosContext);
-        // console.log(points);
         contextRef.current?.lineTo(offsetX, offsetY)
         contextRef.current?.stroke()
+
+        // const newPoint = {
+        //     id: 'Mi punto',
+        //     punto: [offsetX, offsetY]
+        // }
+        // setPuntosContext([...puntosContext, newPoint])
+
+        setPuntosContext((prev: Punto[]) => [...prev, { id: 'Mi punto', punto: [offsetX, offsetY] }]);
+
+        // console.log(puntosContext);
+        // console.log(points);
     }
     const finishDrawing = () => {
         contextRef.current?.closePath()
         setIsDrawing(false)
-        localStorage.setItem(`Mis Puntos`, `${puntosContext}`)
-        console.log('Saved!');
+        // localStorage.setItem(`Mis Puntos`, `${puntosContext}`)
+        // setPuntosContext([...puntosContext, ...points])
+        localStorage.setItem('Mis Puntos', JSON.stringify(puntosContext));
+        console.log('Saved to local Storage!');
     }
 
     return (

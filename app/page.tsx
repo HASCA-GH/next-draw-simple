@@ -1,4 +1,4 @@
-import Image from 'next/image'
+// import Image from 'next/image'
 
 import Myheader from "@/components/Myheader";
 // import MyGraph from "@/components/MyGraph"
@@ -10,9 +10,6 @@ export default function Home() {
     <main>
       <Myheader />
       <MyCanvas />
-
-      {/* <MyGraph /> */}
-
     </main>
   )
 }

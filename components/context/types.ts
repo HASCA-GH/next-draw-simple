@@ -5,7 +5,8 @@ export type Punto = {
 
 export type puntosContextType = {
     puntosContext: Array<Punto>
-    setPuntosContext: (value: Array<Punto>) => void
+    // setPuntosContext: (value: Array<Punto>) => void
+    setPuntosContext: React.Dispatch<React.SetStateAction<Punto[]>>;
 }
 
 

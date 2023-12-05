@@ -36,14 +36,6 @@ const MyCanvas = () => {
         contextRef.current?.moveTo(offsetX, offsetY)
 
         setPoints((prev) => [...prev, [offsetX, offsetY]])
-
-        // const newPoint = {
-        //     id: 'Mi punto',
-        //     punto: [offsetX, offsetY]
-        // }
-        // setPuntosContext([...puntosContext, newPoint])
-        // console.log(points);
-        // console.log(puntosContext);
         setIsDrawing(true)
     }
 
@@ -64,15 +56,12 @@ const MyCanvas = () => {
         // setPuntosContext([...puntosContext, newPoint])
 
         setPuntosContext((prev: Punto[]) => [...prev, { id: 'Mi punto', punto: [offsetX, offsetY] }]);
-
         // console.log(puntosContext);
         // console.log(points);
     }
     const finishDrawing = () => {
         contextRef.current?.closePath()
         setIsDrawing(false)
-        // localStorage.setItem(`Mis Puntos`, `${puntosContext}`)
-        // setPuntosContext([...puntosContext, ...points])
         localStorage.setItem('Mis Puntos', JSON.stringify(puntosContext));
         console.log('Saved to local Storage!');
     }

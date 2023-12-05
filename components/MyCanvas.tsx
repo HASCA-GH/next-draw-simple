@@ -1,7 +1,10 @@
 'use client'
-import { useEffect, useRef, useState, MouseEvent } from "react";
+import { useEffect, useRef, useState, useContext, MouseEvent } from "react";
+import MyContext from '@/components/context/myContext'
+import { puntosContextType } from '@/components/context/types'
 
 const MyCanvas = () => {
+    const { puntosContext, setPuntosContext } = useContext(MyContext) as puntosContextType
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const contextRef = useRef<CanvasRenderingContext2D | null>(null);
     const [isDrawing, setIsDrawing] = useState(false)
@@ -32,7 +35,14 @@ const MyCanvas = () => {
         contextRef.current?.moveTo(offsetX, offsetY)
 
         setPoints((prev) => [...prev, [offsetX, offsetY]])
-        console.log(points);
+
+        const newPoint = {
+            id: 'Mi punto',
+            punto: [offsetX, offsetY]
+        }
+        setPuntosContext([...puntosContext, newPoint])
+        // console.log(points);
+        // console.log(puntosContext);
         setIsDrawing(true)
     }
 
@@ -42,13 +52,22 @@ const MyCanvas = () => {
         }
         const { offsetX, offsetY } = e.nativeEvent
         setPoints((prev) => [...prev, [offsetX, offsetY]])
-        console.log(points);
+
+        const newPoint = {
+            id: 'Mi punto',
+            punto: [offsetX, offsetY]
+        }
+        setPuntosContext([...puntosContext, newPoint])
+        // console.log(puntosContext);
+        // console.log(points);
         contextRef.current?.lineTo(offsetX, offsetY)
         contextRef.current?.stroke()
     }
     const finishDrawing = () => {
         contextRef.current?.closePath()
         setIsDrawing(false)
+        localStorage.setItem(`Mis Puntos`, `${puntosContext}`)
+        console.log('Saved!');
     }
 
     return (

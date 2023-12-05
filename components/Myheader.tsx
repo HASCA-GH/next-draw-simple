@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useContext } from "react"
 
 const Myheader = () => {
+
   const [myName, setMyName] = useState('myNameFile')
   const getDateandTime = () => {
     //return (new Date().toString()) //Mon Nov 27 2023 17:49:05 GMT-0500 (Horário Padrão da Colômbia)
@@ -19,22 +20,10 @@ const Myheader = () => {
 
   }
   const save = () => {
-    // const content = 'Hello content!';
-    // const blob = new Blob([content], { type: 'text/plain' });
-    // const url = URL.createObjectURL(blob);
-
-    // const a = document.createElement('a');
-    // a.href = url;
-    // a.download = 'mynewfile.txt';
-    // document.body.appendChild(a);
-    // a.click();
-    // document.body.removeChild(a);
-
-    // // Revoke the Blob URL to free up resources
-    // URL.revokeObjectURL(url);
     localStorage.setItem(`${myName}`, 'Aqui va el texto')
-
     console.log('Saved!');
+    // console.log(datita);
+
   };
 
   return (
